@@ -2,4 +2,4 @@
 
 | Contents ||||||
 |:---:|---|---|---|---|---|
-|  [Day 01](./day01) |  dsf | sdfds  | sdf  | sdf  | sdf  |
+|  [Day 01](./SQL.md) |  dsf | sdfds  | sdf  | sdf  | sdf  |
