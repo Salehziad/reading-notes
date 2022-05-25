@@ -36,7 +36,7 @@ limit 5;
 ORDER BY title ASC
 limit 5 OFFSET 5;
 
-- ## 
+- ## SQL Review: Simple SELECT Queries
 >> ![excercise1](./assest/exercise5.PNG)
 >>> - SELECT CITY,population FROM north_american_cities WHERE country like "%canada%";
 >>> - SELECT DISTINCT City,latitude
