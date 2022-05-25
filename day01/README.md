@@ -2,4 +2,4 @@
 
 | Contents ||||||
 |:---:|---|---|---|---|---|
-|  [Day 01](./SQL.md) |  dsf | sdfds  | sdf  | sdf  | sdf  |
+| [SQL Practice](./SQL.md) | 
