@@ -36,12 +36,26 @@ limit 5;
 ORDER BY title ASC
 limit 5 OFFSET 5;
 
-<!-- - ## 
+- ## 
 >> ![excercise1](./assest/exercise5.PNG)
->>> - 
->>> - 
->>> -
->>> - -->
+>>> - SELECT CITY,population FROM north_american_cities WHERE country like "%canada%";
+>>> - SELECT DISTINCT City,latitude
+FROM north_american_cities
+WHERE Country=="United States"
+ORDER BY  latitude  DESC;
+>>> - SELECT city, longitude FROM north_american_cities
+WHERE longitude < -87.629798
+ORDER BY longitude ASC;
+>>> - SELECT city, population
+FROM north_american_cities
+WHERE country like "%Mexico%"
+ORDER BY Population DESC
+LIMIT 2;
+>>> - SELECT city, population
+FROM north_american_cities
+WHERE country=="United States"
+ORDER BY Population DESC
+LIMIT 2 OFFSET  2;
 
 <!-- - ## 
 >> ![excercise1](./assest/exercise1.PNG)
