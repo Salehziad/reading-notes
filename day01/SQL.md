@@ -57,15 +57,26 @@ WHERE country=="United States"
 ORDER BY Population DESC
 LIMIT 2 OFFSET  2;
 
-<!-- - ## 
->> ![excercise1](./assest/exercise1.PNG)
->>> - 
->>> - 
->>> -
->>> - -->
+- ## SQL Lesson 6: Multi-table queries with JOINs
+>> ![excercise1](./assest/exercise6.PNG)
+>>> - SELECT title,Domestic_sales,International_sales
+FROM Movies 
+JOIN Boxoffice  
+    ON Movies.id =Boxoffice.Movie_id;
+>>> - SELECT title, domestic_sales, international_sales 
+FROM movies
+  JOIN boxoffice
+    ON movies.id = boxoffice.movie_id
+    where International_sales> Domestic_sales;
+>>> - SELECT title 
+FROM movies
+  JOIN boxoffice
+    ON movies.id = boxoffice.movie_id
+    ORDER BY Rating DESC;
+
 
 <!-- - ## 
->> ![excercise1](./assest/exercise1.PNG)
+>> ![excercise1](./assest/exercise7.PNG)
 >>> - 
 >>> - 
 >>> -
