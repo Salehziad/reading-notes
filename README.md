@@ -4,4 +4,4 @@
 
 | Days ||||||
 |:---:|---|---|---|---|---|
-|  [Day 01](./day01) |  dsf | sdfds  | sdf  | sdf  | sdf  |
+|  [class 01](./day01) |  [class 02]() |   | |   |   |
