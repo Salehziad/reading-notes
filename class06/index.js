@@ -1,51 +1,37 @@
-'use strict';
-const express = require('express');
-const {
-    user
-} = require('pg/lib/defaults');
-const app = express();
-const port = 3000;
-const bcrypt = require('bcrypt');
-// app.listen(()=>{
-//     console.log(`server is lestining on port ${port}`);
-// });
+require('dotenv').config()
+
+const express = require('express')
+const app = express()
+const jwt = require('jsonwebtoken')
 
 app.use(express.json())
 
-const users = [{
-    "name": "name"
-}]
-app.get('/users', (req, res) => {
-    res.json(users);
-});
-app.post('/users', async (req, res) => {
-    try {
-        // const salt=await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const user = {
-            name: req.body.name,
-            password: hashedPassword
-        }
-        users.push(user);
-        res.status(201).send('user added');
-    } catch {
-        res.status(500).send('error');
-    }
-});
-app.post('/users/login', async (req, res) => {
-    const user = users.find(user => user.name === req.body.name)
-    if (user == null) {
-      return  res.status(400).send(`can't find user ${req.body.name}`)
-    }
-    try {
-        if(await bcrypt.compare(req.body.password,user.password)){
-            res.send(`user ${req.body.name} logged in`);
-        }
-        else{
-            res.send('not allowed wrong password')
-        }
-    } catch {
-        res.status(500).send('error');
-    }
-});
-app.listen(port);
+const posts = [
+  {
+    username: 'Kyle',
+    title: 'Post 1'
+  },
+  {
+    username: 'Jim',
+    title: 'Post 2'
+  }
+]
+
+app.get('/posts', authenticateToken, (req, res) => {
+  res.json(posts.filter(post => post.username === req.user.name))
+})
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    console.log(err)
+    if (err) return res.sendStatus(403)
+    req.user = user
+    next()
+  })
+}
+
+app.listen(3000)

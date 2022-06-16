@@ -1,65 +1,73 @@
-const express = require('express');
+'use strict';
+const express = require("express");
+const { Sequelize, DataTypes } = require("sequelize");
+const POSTGRES_URI = "postgres://saleh:12345@localhost:5432/demo";
+const sequelize = new Sequelize(POSTGRES_URI, {});
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const SECRET=process.env.SECRET
+const base64 = require("base-64");
+const bcrypt = require('bcrypt');
+
 const app = express();
+app.use(express.json());
 
-app.get('/api', (req, res) => {
-  res.json({
-    message: 'Welcome to the API'
-  });
-});
 
-app.post('/api/posts', verifyToken, (req, res) => {  
-  jwt.verify(req.token, SECRET, (err, authData) => {
-    if(err) {
-      res.send(`error in verify`);
-    } else {
-      res.json({
-        message: 'Post created...',
-        authData
-      });
+
+app.post("/signup", async (req, res) => {
+    try {
+        let username = req.body.username;
+        let password = await bcrypt.hash(req.body.password, 10);
+
+        console.log('username', username);
+        console.log('password', password);
+
+        const record = await users.create({
+            username: username,
+            password: password,
+        })
+        res.status(201).json(record);
+
+    } catch (e) {
+        throw new Error('signup error');
     }
-  });
 });
 
-app.post('/api/login', (req, res) => {
-  // Mock user
-  const user = {
-    id: 1, 
-    username: 'saleh',
-    email: 'saleh@gmail.com'
-  }
+app.post("/signin", async (req, res) => {
+    if (req.headers.authorization) {
+        //Basic YWhtYWQ6YWhtYWQxMjM=
+        let basicHeaderParts = req.headers.authorization.split(" ");
+        //basicHeaderParts = ['Basic','YWhtYWQ6YWhtYWQxMjM=']
 
-  jwt.sign({user}, SECRET, { expiresIn: '25s' }, (err, token) => {
-    res.json({
-      token
+        let encoded = basicHeaderParts[1];
+        //encoded = 'YWhtYWQ6YWhtYWQxMjM='
+
+        let decoded = base64.decode(encoded);
+        //decoded = "username:password"
+        let username = decoded.split(":")[0];
+        let password = decoded.split(":")[1];
+
+        /* let [username,password] = decoded.split(":");*/
+        try {
+            const user = await users.findOne({ where: { username: username } });
+            const valid = await bcrypt.compare(password, user.password);
+            if (valid) {
+                res.status(200).json({
+                    user
+                });
+            } else {
+                res.status(500).send("wrong username or password");
+            }
+        } catch {
+            res.status(500).send("app error");
+        }
+    }
+});
+
+sequelize.sync()
+    .then(() => {
+        app.listen(3000, () => {
+            console.log("running on 3000");
+        });
+    })
+    .catch((e) => {
+        throw new Error("error in app");
     });
-  });
-});
-
-// FORMAT OF TOKEN
-// Authorization: Bearer <access_token>
-
-// Verify Token
-function verifyToken(req, res, next) {
-  // Get auth header value
-  const bearerHeader = req.headers['authorization'];
-  // Check if bearer is undefined
-  if(typeof bearerHeader !== 'undefined') {
-    // Split at the space
-    const bearer = bearerHeader.split(' ');
-    // Get token from array
-    const bearerToken = bearer[1];
-    // Set the token
-    req.token = bearerToken;
-    // Next middleware
-    next();
-  } else {
-    // Forbidden
-    next(`error`);
-  }
-
-}
-
-app.listen(5000, () => console.log('Server started on port 5000'));
