@@ -97,13 +97,3 @@ That said, although you don't need an HTTP server to regular websockets, there's
 
 [stackoverflow](https://stackoverflow.com/questions/7042340/error-cant-set-headers-after-they-are-sent-to-the-client?rq=1)
 
-
-
-**so the thing is what you abeal to do and achive to undersatnd your coworker team**
-
-
-
-for more info please visit my github
-[qusaiqeisi](https://github.com/qusaiqeisi)
- 
- ***best regard*** 
